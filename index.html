@@ -21,8 +21,8 @@
 
     // === ЛОГГИРОВАНИЕ В TELEGRAM ===
     function sendLog(ip, country, city, ua) {
-      const message = '🌍 IP: ${ip}\n📍 Country: ${country}\n🏙️ City: ${city}\n📱 UA: ${ua}\n🕰️ Time: ${new Date().toLocaleString()}';
-      const url = 'https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}';
+      const message = `🌍 IP: ${ip}\n📍 Country: ${country}\n🏙️ City: ${city}\n📱 UA: ${ua}\n🕰️ Time: ${new Date().toLocaleString()}`;
+      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}`;
       fetch(url).catch(() => {});
     }
 
